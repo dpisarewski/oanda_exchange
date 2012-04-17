@@ -1,5 +1,4 @@
 require "money"
-require "oanda"
 
 class OandaBank < Money::Bank::Base
 
