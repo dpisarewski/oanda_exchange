@@ -29,3 +29,9 @@ Examples:
 ```ruby
   Oanda.exchange(:eur, :to => :usd, :date => Date.new(2010, 1, 1), :days => 14, :amount => 200)
 ```
+
+To use exchange with ruby money(http://money.rubyforge.org/) add into your application configuration:
+
+```ruby
+Money.default_bank = OandaBank.new
+```
