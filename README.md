@@ -6,11 +6,15 @@ API for OANDA exchange webservices
 
 Add this line to your application's Gemfile:
 
-    gem 'oanda_exchange', :git => "git@github.com:arvatoSystemsNA/oanda_exchange.git"
+```ruby
+gem 'oanda_exchange', :git => "git@github.com:arvatoSystemsNA/oanda_exchange.git"
+```
 
 And then execute:
 
-    $ bundle
+```shell
+bundle
+```
 
 ## Usage
 
