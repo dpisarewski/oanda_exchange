@@ -52,7 +52,7 @@ class Oanda
   end
 
   def currencies_request
-    api_request request_string do
+    api_request "" do
       RestClient.get "#{config[:api_url]}/#{config[:currencies]}"
     end
   end
