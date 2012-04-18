@@ -1,4 +1,3 @@
 client_id:
-api_url:  http://web-services.oanda.com/cgi-bin/fxml
-exchange_service: fxml
-currencies: currencies.xml
+exchange_service_url:  http://web-services.oanda.com/cgi-bin/fxml/fxml
+currencies_url: http://www.oanda.com/products/fxml/currencies.xml
