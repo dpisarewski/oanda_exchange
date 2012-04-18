@@ -37,7 +37,6 @@ class Oanda
 
 
   def api_request(request_string, &block)
-    OandaExchange::Config.logger.info "OANDA API: requesting #{base_currency} conversion into #{quote_currency}"
     OandaExchange::Config.logger.debug "OANDA API: request body\n#{request_string}"
     resp = yield request_string
     OandaExchange::Config.logger.debug "OANDA API: response #{resp.code}\n#{resp.body}"
@@ -47,12 +46,15 @@ class Oanda
 
   def exchange_request(request_string)
     api_request request_string do
+      OandaExchange::Config.logger.debug "OANDA API: request \n#{config[:api_url]}/#{config[:exchange_service]}"
+      OandaExchange::Config.logger.info "OANDA API: requesting #{base_currency} conversion into #{quote_currency}"
       RestClient.get "#{config[:api_url]}/#{config[:exchange_service]}", :params => {:fxmlrequest => request_string}
     end
   end
 
   def currencies_request
     api_request "" do
+      OandaExchange::Config.logger.debug "OANDA API: request \n#{config[:api_url]}/#{config[:currencies]}"
       RestClient.get "#{config[:api_url]}/#{config[:currencies]}"
     end
   end
