@@ -23,15 +23,21 @@ And then execute:
 Examples:
 
 ```ruby
-  Oanda.exchange(:usd, :to => :eur)
+Oanda.exchange(:usd, :to => :eur)
 ```
 
 ```ruby
-  Oanda.exchange(:eur, :to => :usd, :date => Date.new(2010, 1, 1), :days => 14, :amount => 200)
+Oanda.exchange(:eur, :to => :usd, :date => Date.new(2010, 1, 1), :days => 14, :amount => 200)
 ```
 
 To use exchange with ruby money(http://money.rubyforge.org/) add into your application configuration:
 
 ```ruby
 Money.default_bank = OandaBank.new
+```
+
+To obtain a hash with all supported currencies use
+
+```ruby
+Oanda.currencies
 ```

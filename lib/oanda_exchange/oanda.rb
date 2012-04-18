@@ -12,6 +12,10 @@ class Oanda
     new.exchange(base_currency, options)
   end
 
+  def self.currencies
+    new.currencies
+  end
+
   def exchange(base_currency, options = {})
     raise Exception.new("no base currency specified")   if base_currency.blank?
     raise Exception.new("no quote currency specified")  if options[:to].blank?
@@ -20,22 +24,47 @@ class Oanda
     self.date               = options[:date] || Date.today
     self.days               = options[:days] || 1
     self.amount             = options[:amount] || 1
-    self.response           = api_request(build_request)
+    self.response           = exchange_request(build_request)
     self.xml_doc            = Nokogiri::XML(response)
     calculate_average_rate
   end
 
+  def currencies
+    self.response           = currencies_request
+    self.xml_doc            = Nokogiri::XML(response)
+    extract_currencies
+  end
 
-  def api_request(request_string)
+
+  def api_request(request_string, &block)
     OandaExchange::Config.logger.info "OANDA API: requesting #{base_currency} conversion into #{quote_currency}"
     OandaExchange::Config.logger.debug "OANDA API: request body\n#{request_string}"
-    resp = RestClient.get config[:api_url], :params => {:fxmlrequest => request_string}
+    resp = yield request_string
     OandaExchange::Config.logger.debug "OANDA API: response #{resp.code}\n#{resp.body}"
+    raise Exception.new("Unexpected response code from OANDA API. See log entries with debug level to get more information.") unless resp.code == 200
     resp.body
+  end
+
+  def exchange_request(request_string)
+    api_request request_string do
+      RestClient.get "#{config[:api_url]}/#{config[:exchange_service]}", :params => {:fxmlrequest => request_string}
+    end
+  end
+
+  def currencies_request
+    api_request request_string do
+      RestClient.get "#{config[:api_url]}/#{config[:currencies]}"
+    end
   end
 
 
   protected
+
+  def extract_currencies
+    xml_doc.search('CURRENCY').inject({}) do |hash, node|
+      hash.merge node.at('CODE').content => node.at('COUNTRY').content
+    end
+  end
 
   def calculate_average_rate
     exchange_rates = extract_exchange_rates
