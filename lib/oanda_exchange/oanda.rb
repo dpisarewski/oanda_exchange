@@ -70,12 +70,12 @@ class Oanda
 
   def calculate_average_rate
     exchange_rates = extract_exchange_rates
-    (exchange_rates.sum / exchange_rates.size).round(4) rescue BigDecimal.new '0'
+    (exchange_rates.sum / exchange_rates.size).round(4) rescue BigDecimal.new('0', 4)
   end
 
   def extract_exchange_rates
     extract_rates.map do |ask, bid|
-      ((BigDecimal.new(ask) + BigDecimal.new(bid)) / 2).round(4)
+      ((BigDecimal.new(ask, 4) + BigDecimal.new(bid, 4)) / 2).round(4)
     end
   end
 
