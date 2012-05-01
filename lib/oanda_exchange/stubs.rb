@@ -1,6 +1,6 @@
 require 'rspec/mocks/standalone'
 
-module Oanda::Stubs
+module OandaExchange::Stubs
 
   def self.stub!
     Oanda.stub!(:exchange) do |cur, opts|
