@@ -16,8 +16,12 @@ module OandaExchange
       @@logger ||= rails_logger || Logger.new(STDOUT)
     end
 
+    def self.env
+      if defined?(Rails) then Rails.env elsif defined?(RAILS_ENV) then RAILS_ENV end
+    end
+
     def self.rails_root
-      if defined?(Rails) then Rails.root elsif defined?(RAILS_ENV) then RAILS_ENV end
+      if defined?(Rails) then Rails.root elsif defined?(RAILS_ENV) then RAILS_ROOT end
     end
 
     def self.rails_logger
