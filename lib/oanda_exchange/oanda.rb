@@ -74,7 +74,7 @@ class Oanda
   end
 
   def extract_exchange_rates
-    extract_rates.map do |ask, bid|
+    extract_rates.reject{|ask, bid| ask == "na" or bid == "na"}.map do |ask, bid|
       ((BigDecimal.new(ask, 5) + BigDecimal.new(bid, 5)) / 2).round(5)
     end
   end
