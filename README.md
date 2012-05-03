@@ -64,6 +64,6 @@ For example
 ```ruby
 OandaExchange::Stubs.stub! :currencies => {"USD" => "US Dollar",
                                            "CAD" => "Canadian Dollar",
-                                           "RUB" => "Russian Ruble"},
-                           :rates => {"CAD" => 0.7, "RUB" => 0.03}
+                                           "RUB" => "Russian Rouble"},
+                           :rates =>      {"CAD" => 0.7, "RUB" => 0.03}
 ```
