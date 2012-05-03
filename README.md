@@ -62,6 +62,8 @@ Default value for rates is `{"USD" => 1, "others" => 1.5}`
 For example
 
 ```ruby
-OandaExchange::Stubs.stub! :currencies => {"USD" => "US Dollar", "CAD" => "Canadian Dollar", "RUB" => "Russian Ruble"},
+OandaExchange::Stubs.stub! :currencies => {"USD" => "US Dollar",
+                                           "CAD" => "Canadian Dollar",
+                                           "RUB" => "Russian Ruble"},
                            :rates => {"CAD" => 0.7, "RUB" => 0.03}
 ```
