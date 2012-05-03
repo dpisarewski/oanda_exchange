@@ -31,7 +31,7 @@ Oanda.exchange(:usd, :to => :eur)
 ```
 
 ```ruby
-Oanda.exchange(:eur, :to => :usd, :date => Date.new(2010, 1, 1), :days => 14, :amount => 200)
+Oanda.exchange(:eur, :to => :usd, :date => Date.new(2010, 1, 1), :days => 14, :amount => 200, :interbank => 2)
 ```
 
 To use exchange with ruby money(http://money.rubyforge.org/) add into your application configuration:

@@ -6,7 +6,7 @@ require "active_support/core_ext/big_decimal"
 
 class Oanda
 
-  attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :xml_doc, :response
+  attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :xml_doc, :response, :interbank
 
   def self.exchange(base_currency, options = {})
     new.exchange(base_currency, options)
@@ -21,12 +21,13 @@ class Oanda
     raise Exception.new("no quote currency specified")  if options[:to].blank?
     self.base_currency      = base_currency.to_s.upcase
     self.quote_currency     = options[:to].to_s.upcase
-    self.date               = options[:date] || Date.today
-    self.days               = options[:days] || 1
-    self.amount             = options[:amount] || 1
+    self.date               = options[:date]      || Date.today
+    self.days               = options[:days]      || 1
+    self.amount             = options[:amount]    || 1
+    self.interbank          = options[:interbank] || 0
     self.response           = exchange_request(build_request)
     self.xml_doc            = Nokogiri::XML(response)
-    calculate_average_rate
+    calculate_average_rate * (1 + interbank.to_f / 100)
   end
 
   def currencies
