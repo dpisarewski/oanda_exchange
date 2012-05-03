@@ -45,3 +45,23 @@ To obtain a hash with all supported currencies use
 ```ruby
 Oanda.currencies
 ```
+
+To avoid API calls to OANDA in test environment you can use predefined stubs:
+
+```ruby
+OandaExchange::Stubs.stub!(options)
+```
+
+options can be :currencies and :rates.
+:currencies should be a hash that is returned by Oanda.currencies.
+Default value for :currencies is {"USD" => "US Dollar", "EUR" => "Euro"}
+
+:rates      should be a hash that is used for currency conversion by Oanda.exchange.
+Default value for rates is {"USD" => 1, "others" => 1.5}
+
+For example
+
+```ruby
+OandaExchange::Stubs.stub! :currencies => {"USD" => "US Dollar", "CAD" => "Canadian Dollar", "RUB" => "Russian Ruble"},
+                           :rates => {"CAD" => 0.7, "RUB" => 0.03}
+```

@@ -2,14 +2,14 @@ require 'rspec/mocks/standalone'
 
 module OandaExchange::Stubs
 
-  def self.stub!
+  DEFAULT_CURRENCIES  = {"USD" => "US Dollar", "EUR" => "Euro"}
+  DEFAULT_RATES       = {"USD" => 1, "other" => 1.5}
+
+  def self.stub!(options = {})
+    rates = options[:rates] || DEFAULT_RATES
     Oanda.stub!(:exchange) do |cur, opts|
-      if cur != "USD"
-        BigDecimal.new((opts[:amount] || 0).to_s) * 1.5
-      else
-        BigDecimal.new((opts[:amount] || 0).to_s)
-      end
+      BigDecimal.new((opts[:amount] || 0).to_s, 5) * (rates[cur] || rates["other"] || 1)
     end
-    Oanda.stub!(:currencies).and_return("USD" => "US Dollar", "EUR" => "Euro")
+    Oanda.stub!(:currencies).and_return(options[:currencies] || DEFAULT_CURRENCIES)
   end
 end
