@@ -54,10 +54,10 @@ OandaExchange::Stubs.stub!(options)
 
 options can be :currencies and :rates.
 :currencies should be a hash that is returned by Oanda.currencies.
-Default value for :currencies is {"USD" => "US Dollar", "EUR" => "Euro"}
+Default value for :currencies is `{"USD" => "US Dollar", "EUR" => "Euro"}`
 
 :rates      should be a hash that is used for currency conversion by Oanda.exchange.
-Default value for rates is {"USD" => 1, "others" => 1.5}
+Default value for rates is `{"USD" => 1, "others" => 1.5}`
 
 For example
 
