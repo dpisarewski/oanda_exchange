@@ -27,7 +27,9 @@ class Oanda
     self.interbank          = options[:interbank] || 0
     self.response           = exchange_request(build_request)
     self.xml_doc            = Nokogiri::XML(response)
-    calculate_average_rate * (1 + interbank.to_f / 100)
+    average_rate  = calculate_average_rate
+    interbank     = average_rate * interbank.to_f / 100
+    base_currency == quote_currency ? average_rate : average_rate + interbank
   end
 
   def currencies
