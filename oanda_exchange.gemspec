@@ -16,7 +16,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "activesupport"
   gem.add_runtime_dependency "money"
   gem.add_runtime_dependency "nokogiri"
-  gem.add_runtime_dependency "racc"
   gem.add_runtime_dependency "rexical"
   gem.add_runtime_dependency "rest-client", "~> 1.6"
 end
