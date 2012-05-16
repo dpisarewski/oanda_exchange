@@ -4,6 +4,12 @@ API for OANDA exchange webservices
 
 ## Installation
 
+Install libxml libraries
+
+```shell
+sudo apt-get install libxml2 libxml2-dev libxslt1-dev
+```
+
 Add this line to your application's Gemfile:
 
 ```ruby
