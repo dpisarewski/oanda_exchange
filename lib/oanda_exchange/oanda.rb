@@ -66,8 +66,8 @@ class Oanda
   protected
 
   def extract_currencies
-    xml_doc.search('CURRENCY').inject({}) do |hash, node|
-      hash.merge node.at('CODE').content => node.at('COUNTRY').content
+    xml_doc.xpath('/CURRENCYCODES/CURRENCY').inject({}) do |hash, node|
+      hash.merge node.at_xpath('CODE').content => node.at_xpath('COUNTRY').content
     end
   end
 
@@ -83,7 +83,7 @@ class Oanda
   end
 
   def extract_rates(options = {:first_currency => true})
-    xml_doc.at('RESPONSE').search('CONVERSION').map{|el| [el.at('ASK').content, el.at('BID').content]}
+    xml_doc.at_xpath('/RESPONSE').xpath('CONVERSION').map{|el| [el.at_xpath('ASK').content, el.at_xpath('BID').content]}
   end
 
   def build_request

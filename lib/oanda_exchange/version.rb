@@ -1,3 +1,3 @@
 module OandaExchange
-  VERSION = "0.5.6.test1"
+  VERSION = "0.5.6.xpath"
 end
