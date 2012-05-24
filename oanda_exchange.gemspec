@@ -15,6 +15,6 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency "activesupport"
   gem.add_runtime_dependency "money"
-  gem.add_runtime_dependency "nokogiri"
+  gem.add_runtime_dependency "nokogiri", "~> 1.4.7"
   gem.add_runtime_dependency "rest-client", "~> 1.6"
 end
