@@ -1,12 +1,12 @@
-require "nokogiri"
 require "rest-client"
 require "active_support/core_ext/object/blank"
 require "active_support/core_ext/enumerable"
 require "active_support/core_ext/big_decimal"
+require "active_support/core_ext/hash/conversions"
 
 class Oanda
 
-  attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :xml_doc, :response, :interbank
+  attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :response, :resp_hash, :interbank
 
   def self.exchange(base_currency, options = {})
     new.exchange(base_currency, options)
@@ -26,7 +26,7 @@ class Oanda
     self.amount             = options[:amount]    || 1
     self.interbank          = options[:interbank] || 0
     self.response           = exchange_request(build_request)
-    self.xml_doc            = Nokogiri::XML(response)
+    self.resp_hash          = Hash.from_xml response
     average_rate    = calculate_average_rate
     self.interbank  = average_rate * interbank.to_f / 100
     base_currency == quote_currency ? average_rate : average_rate + interbank
@@ -34,7 +34,7 @@ class Oanda
 
   def currencies
     self.response           = currencies_request
-    self.xml_doc            = Nokogiri::XML(response)
+    self.resp_hash          = Hash.from_xml response
     extract_currencies
   end
 
@@ -66,8 +66,8 @@ class Oanda
   protected
 
   def extract_currencies
-    xml_doc.xpath('/CURRENCYCODES/CURRENCY').inject({}) do |hash, node|
-      hash.merge node.at_xpath('CODE').content => node.at_xpath('COUNTRY').content
+    resp_hash['CURRENCYCODES']['CURRENCY'].inject({}) do |hash, node|
+      hash.merge node['CODE'] => node['COUNTRY']
     end
   end
 
@@ -82,21 +82,21 @@ class Oanda
     end
   end
 
-  def extract_rates(options = {:first_currency => true})
-    xml_doc.at_xpath('/RESPONSE').xpath('CONVERSION').map{|el| [el.at_xpath('ASK').content, el.at_xpath('BID').content]}
+  def extract_rates
+    resp_hash["CONVERSION"].map{|hash| [hash['ASK'], hash['BID']]}
   end
 
   def build_request
-    Nokogiri::XML::Builder.new do |xml|
-      xml.convert do
-        xml.date date.strftime('%m/%d/%Y')
-        xml.client_id config[:client_id]
-        xml.exch base_currency
-        xml.expr quote_currency
-        xml.nprices days
-        xml.amount amount
-      end
-    end.to_xml
+    {:convert =>
+      {
+        :date       => date.strftime('%m/%d/%Y'),
+        :client_id  => config[:client_id],
+        :exch       => base_currency,
+        :expr       => quote_currency,
+        :nprices    => days,
+        :amount     => amount
+      }
+    }.to_xml
   end
 
   def config

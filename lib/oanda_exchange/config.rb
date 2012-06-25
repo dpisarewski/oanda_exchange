@@ -17,16 +17,31 @@ module OandaExchange
     end
 
     def self.env
-      if defined?(Rails) then Rails.env elsif defined?(RAILS_ENV) then RAILS_ENV end
+      rails_env || ENV["ENV"] || "development"
+    end
+
+    def self.rails_env
+      if defined?(Rails)
+        Rails.env
+      elsif defined?(RAILS_ENV)
+        RAILS_ENV
+      end
     end
 
     def self.rails_root
-      if defined?(Rails) then Rails.root elsif defined?(RAILS_ENV) then RAILS_ROOT end
+      if defined?(Rails)
+        Rails.root
+      elsif defined?(RAILS_ENV)
+        RAILS_ROOT
+      end
     end
 
     def self.rails_logger
-      if defined?(Rails) then Rails.logger elsif defined?(RAILS_DEFAULT_LOGGER) then RAILS_DEFAULT_LOGGER end
+      if defined?(Rails)
+        Rails.logger
+      elsif defined?(RAILS_DEFAULT_LOGGER)
+        RAILS_DEFAULT_LOGGER
+      end
     end
   end
 end
-
