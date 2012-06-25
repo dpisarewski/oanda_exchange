@@ -87,16 +87,14 @@ class Oanda
   end
 
   def build_request
-    {:convert =>
-      {
-        :date       => date.strftime('%m/%d/%Y'),
-        :client_id  => config[:client_id],
-        :exch       => base_currency,
-        :expr       => quote_currency,
-        :nprices    => days,
-        :amount     => amount
-      }
-    }.to_xml
+    {
+      :date       => date.strftime('%m/%d/%Y'),
+      :client_id  => config[:client_id],
+      :exch       => base_currency,
+      :expr       => quote_currency,
+      :nprices    => days,
+      :amount     => amount
+    }.to_xml(:dasherize => false, :skip_types => true, :root => :convert)
   end
 
   def config

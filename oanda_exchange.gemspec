@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = OandaExchange::VERSION
 
+  gem.add_runtime_dependency "builder"
   gem.add_runtime_dependency "activesupport"
   gem.add_runtime_dependency "money"
   gem.add_runtime_dependency "rest-client", "~> 1.6"
