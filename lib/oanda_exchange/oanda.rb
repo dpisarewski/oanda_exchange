@@ -26,7 +26,7 @@ class Oanda
     self.amount             = options[:amount]    || 1
     self.interbank          = options[:interbank] || 0
     self.response           = exchange_request(build_request)
-    self.resp_hash          = Hash.from_xml response
+    self.resp_hash          = Hash.from_xml(response)["RESPONSE"]
     average_rate    = calculate_average_rate
     self.interbank  = average_rate * interbank.to_f / 100
     base_currency == quote_currency ? average_rate : average_rate + interbank
