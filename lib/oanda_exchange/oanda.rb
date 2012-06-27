@@ -83,7 +83,8 @@ class Oanda
   end
 
   def extract_rates
-    Array(resp_hash["CONVERSION"]).map{|hash| [hash['ASK'], hash['BID']]}
+    rates = resp_hash["CONVERSION"].is_a?(Array) ? resp_hash["CONVERSION"] : [resp_hash["CONVERSION"]]
+    rates.map{|hash| [hash['ASK'], hash['BID']]}
   end
 
   def build_request
