@@ -6,7 +6,7 @@ require "active_support/core_ext/hash/conversions"
 
 class Oanda
 
-  attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :response, :resp_hash, :interbank
+  attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :response, :resp_hash, :interbank, :price
 
   def self.exchange(base_currency, options = {})
     new.exchange(base_currency, options)
@@ -19,6 +19,7 @@ class Oanda
   def exchange(base_currency, options = {})
     raise Exception.new("no base currency specified")   if base_currency.blank?
     raise Exception.new("no quote currency specified")  if options[:to].blank?
+    self.price              = options[:price] == :midpoint ? [:ask, :bid] : [options[:price] || :bid]
     self.base_currency      = base_currency.to_s.upcase
     self.quote_currency     = options[:to].to_s.upcase
     self.date               = options[:date]      || Date.today
@@ -72,19 +73,26 @@ class Oanda
   end
 
   def calculate_average_rate
-    exchange_rates = extract_exchange_rates
-    (exchange_rates.sum / exchange_rates.size).round(5) rescue BigDecimal.new('0', 5)
+    average extract_exchange_rates
   end
 
   def extract_exchange_rates
-    extract_rates.reject{|ask, bid| ask == "na" or bid == "na"}.map do |ask, bid|
-      ((BigDecimal.new(ask, 5) + BigDecimal.new(bid, 5)) / 2).round(5)
+    extract_rates.reject{|values| values.index("na")}.map do |values|
+      average values.map{|v| BigDecimal.new(v, 5)}
     end
+  end
+
+  def average(values)
+    (values.sum / values.size).round(5) rescue BigDecimal.new('0', 5)
   end
 
   def extract_rates
     rates = resp_hash["CONVERSION"].is_a?(Array) ? resp_hash["CONVERSION"] : [resp_hash["CONVERSION"]]
-    rates.map{|hash| [hash['ASK'], hash['BID']]}
+    rates.map{|hash| price_value(hash)}
+  end
+
+  def price_value(hash)
+    price.map{|p| hash[p.to_s.upcase]}
   end
 
   def build_request
