@@ -30,7 +30,7 @@ class Oanda
     self.resp_hash          = Hash.from_xml(response)["RESPONSE"]
     average_rate    = calculate_average_rate
     self.interbank  = average_rate * interbank.to_f / 100
-    base_currency == quote_currency ? average_rate : average_rate + interbank
+    base_currency == quote_currency ? average_rate : average_rate - interbank
   end
 
   def currencies
@@ -77,7 +77,7 @@ class Oanda
   end
 
   def extract_exchange_rates
-    extract_rates.reject{|values| values.index("na")}.map do |values|
+    extract_rates.reject{|values| values.include?("na")}.map do |values|
       average values.map{|v| BigDecimal.new(v, 5)}
     end
   end
