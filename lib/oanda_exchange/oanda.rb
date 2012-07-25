@@ -8,6 +8,8 @@ class Oanda
 
   attr_accessor :base_currency, :quote_currency, :date, :days, :amount, :response, :resp_hash, :interbank, :price
 
+  PRECISION = 8
+
   def self.exchange(base_currency, options = {})
     new.exchange(base_currency, options)
   end
@@ -78,12 +80,12 @@ class Oanda
 
   def extract_exchange_rates
     extract_rates.reject{|values| values.include?("na")}.map do |values|
-      average values.map{|v| BigDecimal.new(v, 5)}
+      average values.map{|v| BigDecimal.new(v, PRECISION)}
     end
   end
 
   def average(values)
-    (values.sum / values.size).round(5) rescue BigDecimal.new('0', 5)
+    (values.sum / values.size).round(PRECISION) rescue BigDecimal.new('0', PRECISION)
   end
 
   def extract_rates
