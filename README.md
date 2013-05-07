@@ -4,22 +4,16 @@ API for OANDA exchange webservices
 
 ## Installation
 
-Install libxml libraries
-
-```shell
-sudo apt-get install libxml2 libxml2-dev libxslt1-dev
-```
-
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'oanda_exchange', :git => "git@github.com:arvatoSystemsNA/oanda_exchange.git"
+gem 'oanda_exchange', :git => "git://github.com/dpisarewski/oanda_exchange.git"
 ```
 
 And then execute:
 
 ```shell
-bundle
+bundle install
 ```
 
 ## Usage
