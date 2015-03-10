@@ -3,10 +3,10 @@ require File.expand_path('../lib/oanda_exchange/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Dieter Pisarewski"]
-  gem.email         = ["dieter.pisarewski@arvatosystems.com"]
+  gem.email         = ["dieter.pisarewski@gmail.com"]
   gem.description   = "OANDA Exchange API"
   gem.summary       = "API for OANDA Exchange Services"
-  gem.homepage      = "http://www.arvatosystems-us.com/"
+  gem.homepage      = "https://github.com/dpisarewski/oanda_exchange"
 
   gem.files         = Dir.glob("lib/**/*")
   gem.name          = "oanda_exchange"
